@@ -1,0 +1,149 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+
+@theme inline {
+    --font-sans:
+        Instrument Sans, ui-sans-serif, system-ui, sans-serif,
+        'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+        'Noto Color Emoji';
+
+    /* Card table felt */
+    --color-felt-50: #eefbf3;
+    --color-felt-100: #d6f5e2;
+    --color-felt-200: #b0e9c9;
+    --color-felt-300: #7bd7a8;
+    --color-felt-400: #45bd84;
+    --color-felt-500: #22a169;
+    --color-felt-600: #158154;
+    --color-felt-700: #126745;
+    --color-felt-800: #12513a;
+    --color-felt-900: #0f4331;
+    --color-felt-950: #06261c;
+
+    /* Suit colours, kept distinct at a glance */
+    --color-suit-red: #d92d20;
+    --color-suit-black: #101828;
+
+    --color-brass-300: #f6d78a;
+    --color-brass-400: #eebd52;
+    --color-brass-500: #d99e26;
+}
+
+@layer base {
+    html {
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+        @apply bg-felt-950 text-white;
+        /* Keep the table usable inside a phone's safe area. */
+        padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    :focus-visible {
+        @apply outline-2 outline-offset-2 outline-brass-400;
+    }
+}
+
+@layer components {
+    .felt-surface {
+        background:
+            radial-gradient(
+                circle at 50% 0%,
+                rgb(28 108 76 / 0.9),
+                transparent 60%
+            ),
+            radial-gradient(
+                circle at 50% 100%,
+                rgb(9 58 41 / 0.9),
+                transparent 55%
+            ),
+            var(--color-felt-900);
+    }
+
+    .panel {
+        @apply rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm;
+    }
+
+    .field-label {
+        @apply mb-1.5 block text-sm font-medium text-felt-100;
+    }
+
+    .field-hint {
+        @apply mt-1 text-xs text-felt-200/70;
+    }
+
+    .field-control {
+        @apply w-full rounded-xl border border-white/15 bg-felt-950/60 px-3 py-2.5 text-white placeholder:text-white/35 focus:border-brass-400 focus:ring-0;
+    }
+}
+
+@layer utilities {
+    /* Respect a reduced-motion preference everywhere without repeating the query. */
+    @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+            animation-duration: 0.001ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.001ms !important;
+        }
+    }
+}
+
+@keyframes card-deal {
+    from {
+        opacity: 0;
+        transform: translateY(-40px) scale(0.85) rotate(-6deg);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@keyframes card-drop {
+    from {
+        opacity: 0;
+        transform: translateY(-64px) scale(1.1);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@keyframes pile-sweep {
+    to {
+        opacity: 0;
+        transform: translateY(28px) scale(0.7);
+    }
+}
+
+@keyframes pulse-turn {
+    0%,
+    100% {
+        box-shadow: 0 0 0 0 rgb(238 189 82 / 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 12px rgb(238 189 82 / 0);
+    }
+}
+
+.animate-card-deal {
+    animation: card-deal 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-card-drop {
+    animation: card-drop 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-pile-sweep {
+    animation: pile-sweep 0.35s ease-in forwards;
+}
+
+.animate-turn {
+    animation: pulse-turn 2s ease-out infinite;
+}
